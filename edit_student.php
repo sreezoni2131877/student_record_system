@@ -3,28 +3,34 @@ session_start();
 include("db.php");
 
 $id = (int)$_GET['id'];
-$result = mysqli_query($conn, "SELECT * FROM students WHERE id=$id");
+$result = mysqli_query($conn, "SELECT * FROM student WHERE StudentID=$id");
 $student = mysqli_fetch_assoc($result);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $student_id = $_POST['student_id'];
-    $course = $_POST['course'];
-    $enrol_date = $_POST['enrol_date'];
-    $cgpa = $_POST['cgpa'];
-    $attendance = $_POST['attendance'];
-    $department = $_POST['department'];
+    $firstName   = $_POST['first_name'];
+    $lastName    = $_POST['last_name'];
+    $dob         = $_POST['date_of_birth'];
+    $gender      = $_POST['gender'];
+    $email       = $_POST['email'];
+    $phone       = $_POST['phone'];
+    $address     = $_POST['address'];
 
-    mysqli_query($conn, "UPDATE students SET 
-        student_id='$student_id',
-        course='$course',
-        enrol_date='$enrol_date',
-        cgpa='$cgpa',
-        attendance='$attendance',
-        department='$department'
-        WHERE id=$id");
+    $sql = "UPDATE student SET 
+        FirstName='$firstName',
+        LastName='$lastName',
+        DateOfBirth='$dob',
+        Gender='$gender',
+        Email='$email',
+        Phone='$phone',
+        Address='$address'
+        WHERE StudentID=$id";
 
-    header("Location: view_student.php");
-    exit();
+    if (mysqli_query($conn, $sql)) {
+        header("Location: view_student.php");
+        exit();
+    } else {
+        $error = "Error: " . mysqli_error($conn);
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -37,14 +43,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="card">
     <h2>Edit Student</h2>
     <form method="POST">
-        <input type="text" name="student_id" value="<?php echo htmlspecialchars($student['student_id']); ?>" required><br>
-        <input type="text" name="course" value="<?php echo htmlspecialchars($student['course']); ?>" required><br>
-        <input type="date" name="enrol_date" value="<?php echo htmlspecialchars($student['enrol_date']); ?>" required><br>
-        <input type="number" step="0.01" name="cgpa" value="<?php echo htmlspecialchars($student['cgpa']); ?>" required><br>
-        <input type="number" name="attendance" value="<?php echo htmlspecialchars($student['attendance']); ?>" required><br>
-        <input type="text" name="department" value="<?php echo htmlspecialchars($student['department']); ?>" required><br>
+        <input type="text" name="first_name" value="<?php echo htmlspecialchars($student['FirstName']); ?>" required><br>
+        <input type="text" name="last_name" value="<?php echo htmlspecialchars($student['LastName']); ?>" required><br>
+        <input type="date" name="date_of_birth" value="<?php echo htmlspecialchars($student['DateOfBirth']); ?>" required><br>
+        <select name="gender" required>
+            <option value="Male" <?php if($student['Gender']=="Male") echo "selected"; ?>>Male</option>
+            <option value="Female" <?php if($student['Gender']=="Female") echo "selected"; ?>>Female</option>
+            <option value="Other" <?php if($student['Gender']=="Other") echo "selected"; ?>>Other</option>
+        </select><br>
+        <input type="email" name="email" value="<?php echo htmlspecialchars($student['Email']); ?>" required><br>
+        <input type="text" name="phone" value="<?php echo htmlspecialchars($student['Phone']); ?>" required><br>
+        <input type="text" name="address" value="<?php echo htmlspecialchars($student['Address']); ?>"><br>
         <button type="submit">Save Changes</button>
     </form>
+    <?php if(isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
     <br>
     <a href="view_student.php" class="btn">⬅ Back to Students</a>
 </div>
