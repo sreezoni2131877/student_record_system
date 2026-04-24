@@ -11,14 +11,35 @@ $result = mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
 <html>
-<head><title>View Enrollments</title></head>
+<head>
+    <title>View Enrollments</title>
+    <style>
+        table { border-collapse: collapse; width: 90%; margin: 20px auto; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: center; }
+        th { background: #007BFF; color: white; }
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 2px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #fff;
+        }
+        .btn-edit { background-color: #28a745; }   /* Green */
+        .btn-delete { background-color: #dc3545; } /* Red */
+        .btn-add { background-color: #007BFF; }    /* Blue */
+        .btn:hover { opacity: 0.85; }
+    </style>
+</head>
 <body>
-<h2>Enrollment Records</h2>
-<a href="add_enrollment.php">➕ Add Enrollment</a>
+<h2 style="text-align:center;">Enrollment Records</h2>
+<div style="text-align:center;">
+    <a href="add_enrollment.php" class="btn btn-add">➕ Add Enrollment</a>
+</div>
 <?php if ($result && mysqli_num_rows($result) > 0) { ?>
-<table border="1" cellpadding="8">
+<table>
 <tr>
-    <th>ID</th><th>Student</th><th>Course</th><th>Semester</th><th>Year</th><th>Grade</th>
+    <th>ID</th><th>Student</th><th>Course</th><th>Semester</th><th>Year</th><th>Grade</th><th>Actions</th>
 </tr>
 <?php while ($row = mysqli_fetch_assoc($result)) { ?>
 <tr>
@@ -28,9 +49,13 @@ $result = mysqli_query($conn, $sql);
     <td><?php echo $row['Semester']; ?></td>
     <td><?php echo $row['Year']; ?></td>
     <td><?php echo $row['Grade']; ?></td>
+    <td>
+        <a href="edit_enrollment.php?id=<?php echo $row['EnrollmentID']; ?>" class="btn btn-edit">✏️ Edit</a>
+        <a href="delete_enrollment.php?id=<?php echo $row['EnrollmentID']; ?>" class="btn btn-delete" onclick="return confirm('Delete this enrollment?');">🗑️ Delete</a>
+    </td>
 </tr>
 <?php } ?>
 </table>
-<?php } else { echo "<p>No enrollments found.</p>"; } ?>
+<?php } else { echo "<p style='text-align:center;'>No enrollments found.</p>"; } ?>
 </body>
 </html>
