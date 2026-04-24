@@ -2,16 +2,8 @@
 session_start();
 include("db.php");
 
-// Handle delete
-if (isset($_GET['delete'])) {
-    $id = (int)$_GET['delete'];
-    mysqli_query($conn, "DELETE FROM students WHERE id=$id");
-    header("Location: view_student.php");
-    exit();
-}
-
 // Fetch students
-$result = mysqli_query($conn, "SELECT * FROM students ORDER BY id ASC");
+$result = mysqli_query($conn, "SELECT * FROM student ORDER BY StudentID ASC");
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,6 +15,8 @@ $result = mysqli_query($conn, "SELECT * FROM students ORDER BY id ASC");
         .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
         .empty { padding: 16px; background: #fff3cd; color: #7a5d00; border-radius: 8px; }
         .actions a { margin-right: 8px; }
+        table { width:100%; border-collapse: collapse; }
+        th, td { border:1px solid #ccc; padding:8px; text-align:left; }
     </style>
 </head>
 <body>
@@ -40,28 +34,30 @@ $result = mysqli_query($conn, "SELECT * FROM students ORDER BY id ASC");
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Student ID</th>
-                <th>Course</th>
-                <th>Enrol Date</th>
-                <th>CGPA</th>
-                <th>Attendance</th>
-                <th>Department</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Date of Birth</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         <?php while ($row = mysqli_fetch_assoc($result)) { ?>
             <tr>
-                <td><?php echo htmlspecialchars($row['id']); ?></td>
-                <td><?php echo htmlspecialchars($row['student_id']); ?></td>
-                <td><?php echo htmlspecialchars($row['course']); ?></td>
-                <td><?php echo htmlspecialchars($row['enrol_date']); ?></td>
-                <td><?php echo htmlspecialchars($row['cgpa']); ?></td>
-                <td><?php echo htmlspecialchars($row['attendance']); ?>%</td>
-                <td><?php echo htmlspecialchars($row['department']); ?></td>
+                <td><?php echo htmlspecialchars($row['StudentID']); ?></td>
+                <td><?php echo htmlspecialchars($row['FirstName']); ?></td>
+                <td><?php echo htmlspecialchars($row['LastName']); ?></td>
+                <td><?php echo htmlspecialchars($row['DateOfBirth']); ?></td>
+                <td><?php echo htmlspecialchars($row['Gender']); ?></td>
+                <td><?php echo htmlspecialchars($row['Email']); ?></td>
+                <td><?php echo htmlspecialchars($row['Phone']); ?></td>
+                <td><?php echo htmlspecialchars($row['Address']); ?></td>
                 <td class="actions">
-                    <a class="btn" href="edit_student.php?id=<?php echo urlencode($row['id']); ?>">✏️ Edit</a>
-                    <a class="btn" href="view_student.php?delete=<?php echo urlencode($row['id']); ?>" onclick="return confirm('Delete this student?');">🗑️ Delete</a>
+                    <a class="btn" href="edit_student.php?id=<?php echo urlencode($row['StudentID']); ?>">✏️ Edit</a>
+                    <a class="btn" href="delete_student.php?id=<?php echo urlencode($row['StudentID']); ?>" onclick="return confirm('Delete this student?');">🗑️ Delete</a>
                 </td>
             </tr>
         <?php } ?>
