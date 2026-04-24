@@ -10,15 +10,28 @@ $result = mysqli_query($conn, "SELECT * FROM course ORDER BY CourseID ASC");
 <head>
     <title>View Courses</title>
     <style>
-        table { border-collapse: collapse; width: 80%; margin: 20px auto; }
+        table { border-collapse: collapse; width: 90%; margin: 20px auto; }
         th, td { border: 1px solid #333; padding: 8px; text-align: center; }
         th { background: #007BFF; color: white; }
-        a { margin: 5px; display: inline-block; }
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 2px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #fff;
+        }
+        .btn-add { background-color: #007BFF; }   /* Blue */
+        .btn-edit { background-color: #28a745; }  /* Green */
+        .btn-delete { background-color: #dc3545; }/* Red */
+        .btn:hover { opacity: 0.85; }
     </style>
 </head>
 <body>
 <h2 style="text-align:center;">Course Records</h2>
-<a href="add_course.php">➕ Add Course</a>
+<div style="text-align:center;">
+    <a href="add_course.php" class="btn btn-add">➕ Add Course</a>
+</div>
 <?php if ($result && mysqli_num_rows($result) > 0) { ?>
 <table>
 <tr>
@@ -32,8 +45,8 @@ $result = mysqli_query($conn, "SELECT * FROM course ORDER BY CourseID ASC");
     <td><?php echo $row['CreditHours']; ?></td>
     <td><?php echo $row['Department']; ?></td>
     <td>
-        <a href="edit_course.php?id=<?php echo $row['CourseID']; ?>">✏️ Edit</a>
-        <a href="delete_course.php?id=<?php echo $row['CourseID']; ?>" onclick="return confirm('Delete this course?');">🗑️ Delete</a>
+        <a href="edit_course.php?id=<?php echo $row['CourseID']; ?>" class="btn btn-edit">✏️ Edit</a>
+        <a href="delete_course.php?id=<?php echo $row['CourseID']; ?>" class="btn btn-delete" onclick="return confirm('Delete this course?');">🗑️ Delete</a>
     </td>
 </tr>
 <?php } ?>
