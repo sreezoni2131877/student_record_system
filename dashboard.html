@@ -1,14 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Dashboard - Student Record System</title>
+    <meta charset="UTF-8">
+    <title>Dashboard (Demo)</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; text-align: center; }
+        .dashboard { max-width: 600px; margin: 60px auto; }
+        .btn {
+            display: inline-block; margin: 10px; padding: 12px 20px;
+            background: #007BFF; color: #fff; text-decoration: none; border-radius: 5px;
+        }
+        .btn:hover { background: #0056b3; }
+    </style>
 </head>
 <body>
-  <h2>Dashboard</h2>
-  <a href="add_student.html">Add Student</a> | <a href="add_course.html">Add Course</a> | <a href="enroll.html">Enroll Student</a>
-  <table border="1">
-    <tr><th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>Semester</th><th>Year</th><th>Grade</th></tr>
-    <tr><td>1</td><td>Demo Student</td><td>demo@email.com</td><td>Database Systems</td><td>Spring</td><td>2026</td><td>A</td></tr>
-  </table>
+<div class="dashboard">
+    <h2>Welcome (Demo User)</h2>
+    <a href="students.html" class="btn">📋 View Students</a>
+    <a href="courses.html" class="btn">📚 View Courses</a>
+    <a href="enrollments.html" class="btn">📖 View Enrollments</a>
+</div>
 </body>
 </html>
