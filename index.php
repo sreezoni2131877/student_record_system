@@ -4,13 +4,16 @@ include("db.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
-    $password = md5($_POST['password']);
-    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+    $password = $_POST['password']; // plain text for now
+
+    // Query the admin table
+    $sql = "SELECT * FROM admin WHERE Username='$username' AND Password='$password'";
     $result = mysqli_query($conn, $sql);
 
-    if (mysqli_num_rows($result) == 1) {
+    if ($result && mysqli_num_rows($result) == 1) {
         $_SESSION['username'] = $username;
         header("Location: dashboard.php");
+        exit();
     } else {
         $error = "Invalid login!";
     }
